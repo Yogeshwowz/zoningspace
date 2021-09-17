@@ -1,0 +1,51 @@
+  <a id="show-sidebar" href="#">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+  </a>
+  <nav id="sidebar" class="sidebar-wrapper">
+    <div class="sidebar-content">
+        <div id="close-sidebar">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+      <!-- sidebar-search  -->
+      <div class="sidebar-menu">
+        <ul>
+          <li class="active">
+            <a href="<?php echo base_url();?>dashboard">
+              <i class="fa fa-dashboard"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+		  <?php if(!empty($records['subscription'])){
+					   if($records['subscription']==2 || $records['subscription']==4){ ?>
+		   <li>
+            <a href="<?php echo base_url();?>members">
+              <i class="fa fa-user"></i>
+              <span>Manage Members</span>
+            </a>
+          </li>
+		<?php }
+		  }	?>
+          <li>
+            <a href="#">
+              <i class="fa fa-calendar"></i>
+              <span>Save Search</span>
+            </a>
+          </li>
+          <li>
+            <a href="<?php echo base_url();?>buy-search">
+              <i class="fa fa-folder"></i>
+              <span>Purchased Data</span>
+            </a>
+          </li>
+          <li>
+            <a href="<?php echo base_url();?>logout">
+              <i class="fa fa-trash"></i>
+              <span>Logout</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- sidebar-menu  -->
+    </div>
+  </nav>
+  <!-- sidebar-wrapper  -->

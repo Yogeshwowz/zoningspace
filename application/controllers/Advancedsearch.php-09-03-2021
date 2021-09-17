@@ -1,0 +1,52 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Advancedsearch extends CI_Controller {
+
+
+	public function __construct() {
+       parent::__construct();
+	    
+       $this->load->library("session");
+       $this->load->helper('url');
+	   $this->load->model('Advancedsearch_Model');
+	   $this->load->library("pagination");
+	
+    }
+
+	public function getuserdata(){
+		$result = $this->Advancedsearch_Model->getuserdata();
+		echo json_encode($result);
+	
+	}
+	
+
+	public function saveSearch(){
+	  $result = $this->Advancedsearch_Model->saveSearch();
+	  echo $result;
+		
+	}
+	
+	 public function searchingMap(){
+	 if(isset($_POST['submitBtn'])){ 
+			$data['postData'] = $_POST; 
+				$data['jsonPostData'] = serialize($_POST);
+				$result = $this->Advancedsearch_Model->saveSearchData($data['jsonPostData']);
+				$mayarray = array();
+				$mayarray['lat'] = $_POST['lat'];
+				$mayarray['lng'] = $_POST['lng'];
+				$mayarray['address'] = $_POST['searchboxForAddress'];
+				$mayarray['place_id'] = $_POST['place_id'];
+				$data['mapdraw'] = $mayarray;
+			}
+		$data['searchid'] = $this->Advancedsearch_Model->getLastSavedSearch();
+		$this->load->view('templates/header');
+		$this->load->view('home/view-data',$data);
+		$this->load->view('templates/footer');
+	}
+	
+	
+	
+}
+
+	

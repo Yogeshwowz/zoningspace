@@ -1,0 +1,79 @@
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+
+class Dashboard extends CI_Controller
+{
+    /**
+     * This is default constructor of the class
+     */
+    public function __construct(){
+        parent::__construct();
+		
+        $this->load->library('session');
+		$this->load->helper('url');
+		$this->load->helper('form');
+		$this->load->model('Dashboard_model');
+        $this->load->model('Advancedsearch_Model');
+		$this->load->model('administrator_model');
+		 $this->load->model('Csv_model');
+		 $this->load->library('zip');
+		 $this->load->helper(array('email'));
+        $this->load->library(array('email'));
+    }
+	// User Dash Board
+		public function dashboard(){
+			$data['title'] = 'Dashboard';
+			$data['records'] = $this->Dashboard_model->getUsersInformation();
+			$this->load->view('templates/header');
+			$this->load->view('user-dashboard/dashboard', $data);
+			$this->load->view('templates/footer');
+		}
+		public function Member(){
+			$data['title'] = 'Members';
+			$data['records'] = $this->Dashboard_model->getUsersInformation();
+			$data['members'] = $this->Dashboard_model->getMembers();
+			$this->load->view('templates/header');
+			$this->load->view('user-dashboard/members', $data);
+			$this->load->view('templates/footer');
+		}
+		
+		
+		// Save Search
+		public function buySearchRecords(){
+			$data['buyrecords'] = $this->Dashboard_model->getbuySearch();
+			$data['title'] = 'Buy Search';
+			$this->load->view('templates/header');
+			$this->load->view('user-dashboard/buy-search', $data);
+			$this->load->view('templates/footer');
+		}
+		public function mySaveSearch(){
+			$data['title'] = 'My Saved Search';
+			$this->load->view('templates/header');
+			$this->load->view('user-dashboard/my-save-search', $data);
+			$this->load->view('templates/footer');
+		}
+		
+		public function buySearch(){
+			$result = $this->Dashboard_model->buySearch();
+			echo $result;
+		}
+		
+		
+		
+		// Add to Cart Process
+		public function addcart(){
+			$result = $this->Dashboard_model->addcart();
+			if($result){ redirect('cart');}else{  redirect('cart');
+			}
+		}
+		public function cart($page = 'cart'){
+			$data['title'] = 'cart';
+			$data['cart'] =$this->Dashboard_model->getCart();
+			$this->load->view('templates/header');
+			$this->load->view('home/cart.php', $data);
+			$this->load->view('templates/footer');
+		}
+		// End here
+		
+}
+
+?>

@@ -1,0 +1,586 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
+
+<style> .radiobtn {
+    display: none;
+}
+.h2divclass {
+     background: #22337d;
+    color: #fff;
+    padding: 17px;
+    
+}
+</style>
+<style>
+.loading { color: red; }
+#loading { display:none; color:red; font-size:30px; }
+</style>
+<!--Start Section-->
+		<section>
+
+			<div class="banner-1 cover-image sptb-2 sptb-tab bg-background2" data-image-src="<?php echo base_url();?>assets/images/banners/banner1.jpg">
+				<div class="header-text mb-0">
+					<div class="container">
+				
+						<div class="text-center text-white mb-7">
+							<h1 class="mb-1">Find Your Best Property</h1>
+							<p>It is a long established fact that a reader will be distracted by the readable.</p>
+						</div>
+						<div class="row">
+							<div class="col-xl-10 col-lg-12 col-md-12 d-block mx-auto">
+							  <form action="<?php echo base_url();?>searching" method="post">
+								<div class="search-background bg-transparent">
+									<div class="form row no-gutters">
+									
+										<div class="form-group  col-xl-9 col-lg-9 col-md-12 mb-0 bg-white ">
+											<input type="text" class="form-control input-lg br-tr-md-0 br-br-md-0" id="searchbox"  name="searchbox" placeholder="Enter Loaction, Landmark" autocomplete="off" >
+											<input type="hidden"  name="simplesearch" value="1">
+											<span><i class="fa fa-map-marker location-gps mr-2"></i></span>
+										</div>
+										
+										<div class="col-xl-3 col-lg-3 col-md-12 mb-0">
+										<input type="submit" class="btn btn-lg btn-block btn-primary br-tr-md-0 br-br-md-0" value="Search Here" name="submitBtn">
+										</div>
+										<div class="form-group  col-xl-9 col-lg-9 col-md-12 mb-0 search_data">
+										<div class="serachdatadiv">
+											<ul id="results"></ul>
+											<span id="loading">Loading Please wait...</span>
+										</div>
+										
+										</div>
+										<?php /*
+										<div class="col-xl-3 col-lg-3 col-md-12 mb-0">
+
+												 <?php if(($resultUser['status']==2) && (empty($this->session->userdata('email')))){ ?>
+												 		<button class="btn btn-lg btn-block btn-secondary br-tr-md-0 br-br-md-0 ad-post" type="submit"  data-toggle="modal" data-target="#paymentModalCenter">Advanced Search</button>
+												<?php }else{ ?> 	
+											<?php if(!empty($resultUser['visitor_expiry_time']) && ($resultUser['status'])==1){ ?>	
+											<a class="btn btn-lg btn-block btn-secondary br-tr-md-0 br-br-md-0 ad-post " href="<?php echo base_url(); ?>subscription">Payment</a>
+										<?php } else { ?>
+										<a class="btn btn-lg btn-block btn-secondary br-tr-md-0 br-br-md-0 ad-post " href="<?php echo base_url(); ?>searching">Advanced Search</a>
+										<?php 
+										}
+										} ?>
+										
+										</div>
+										*/
+										?>
+										
+									</div>
+								</div>
+							  </form>
+							</div>
+						</div>
+					</div>
+				</div><!-- /header-text -->
+			</div>
+		</section>
+		<!--/Section-->
+
+		<!--Section-->
+			
+
+		<!--Section-->
+		<section class="sptb1 bg-white top-space1" id="advancedsearch">
+		    <div class="section-title center-block text-center h2divclass">
+					<h2>Advanced Search</h2>
+				</div>
+			<div class="container">
+				
+				<div class="row">
+   <div class="col-md-12">
+              <form action="<?php echo base_url();?>searching" method="POST">
+            <input  type="hidden" value="<?php echo base_url();?>" id="baseUrl">
+            <div class="row">
+            <div class="form-group form-group11">
+               <div class="row">
+	               <div class="form-check sub-heading col-md-4 col-sm-6 checkbox-blue" id="listResults">
+	                	<div class="row">
+	                  		<div class="col-10"> Property Owned By Person </div>
+	                 		<div class="col-1">
+			                	<div class="custom-control form-control-lg custom-checkbox">  
+			    					<input type="checkbox" class="custom-control-input" value="person" name="propertyCheck[]" id="defaultCheckPerson">
+			    					<label class="custom-control-label" for="defaultCheckPerson"></label>
+		    					</div>
+	            			</div>
+	            		</div>
+	               	</div>
+	               <div class="col-md-2"></div>
+	               <div class="form-check sub-heading col-md-4 col-sm-6 checkbox-blue" id="listResults">
+	                <div class="row">
+	                	<div class="col-10"> Property Owned By Business </div>
+		                <div class="col-1">
+			                <div class="custom-control form-control-lg custom-checkbox">  
+		    					<input type="checkbox" class="custom-control-input" value="business" name="propertyCheck[]" id="defaultCheckBusiness">
+		    					<label class="custom-control-label" for="defaultCheckBusiness"></label></div>
+			            	</div>
+	            	</div>
+	               </div>
+	               <div class="col-md-2"></div>
+	           </div>
+	           <div class="row">
+	               <div class="form-check sub-heading col-md-4 col-sm-6 checkbox-blue" id="listResults">
+	                <div class="row">
+	                	<div class="col-10"> Property Owned By Government </div>
+		                <div class="col-1">
+			                <div class="custom-control form-control-lg custom-checkbox">  
+		    					<input type="checkbox" class="custom-control-input" value="govt"  name="propertyCheck[]" id="defaultCheckGovernment">
+		    					<label class="custom-control-label" for="defaultCheckGovernment"></label></div>
+			            	</div>
+	            	</div>
+	               </div>
+	               <div class="col-md-2"></div>
+	               <div class="form-check sub-heading col-md-4 col-sm-6 checkbox-blue" id="listResults">
+	                <div class="row">
+	                	<div class="col-10"> Owns Multiple Properties </div>
+		                <div class="col-1">
+			                <div class="custom-control form-control-lg custom-checkbox">  
+		    					<input type="checkbox" class="custom-control-input" value="" id="defaultCheckMultipleProperties">
+		    					<label class="custom-control-label" for="defaultCheckMultipleProperties"></label></div>
+			            	</div>
+	            	</div>
+	               </div>
+	               <div class="col-md-2"></div>
+	           </div>
+               <div class="row selects">
+                <div class="col-md-4 col-sm-6 select-a">
+                     <button id="zipcodeId"  rel="zip" type="button" class="btn btn-primary form-btn zipcodeCls " data-toggle="modal" data-target="#myModalZipCode">Select Zipcode(s)</button>
+                     <!-- The Modal1 -->
+                     <div class="container">
+                        <div class="modal" id="myModalZipCode">
+                           <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                 <!-- Modal Header -->
+                                 <div class="modal-header mod-head-cls">
+                                    <h4 class="modal-title text-center">Choose Zipcode(s)</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                 </div>
+                                 <!-- Modal body -->
+								<div class="modal-body">
+									<div class="row" id="zipcodeDiv">
+									<?php 
+										foreach($zip as $resultZip){ ?>
+											<div class="col-md-4">
+												<div class="form-check"><?php echo $resultZip["zipcode"];?>
+													<input name="zip[]" class="form-check-input caseZip" type="checkbox" value="<?php echo $resultZip["zipcode"];?>" id="defaultCheck1zip<?php echo $resultZip["zipid"];?>" >
+													<label class="form-check-label" for="defaultCheck1zip<?php echo $resultZip["zipid"];?>">            
+													</label>
+												</div>        
+											</div><?php 
+										}
+									?>
+									</div>
+								</div>
+									 <!-- Modal footer -->
+									 <div class="modal-footer">
+										 <div class="row">
+											 <div class="col-md-7">
+												<button type="button" class="btn form-btn" data-dismiss="modal" data-toggle="modal" data-target="#myModalUse">Move to screen 2</button>
+											 </div>
+											 <div class="col-md-5">
+												<button type="button" class="btn form-btn" id="clearZipbtn" rel="zip">Clear Filters</button>
+												
+											 </div>
+										 </div>
+									 </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-6 select-a">
+				 <button type="button" class="btn btn-primary form-btn" data-toggle="modal" data-target="#myModalUse">Select Use(s)</button>
+				 <!-- The Modal1 -->
+					 <div class="container">
+						 <div class="modal" id="myModalUse">
+							<div class="modal-dialog modal-dialog1">
+								 <div class="modal-content">
+								 <!-- Modal Header -->
+									 <div class="modal-header mod-head-cls">
+
+									 <h4 class="modal-title text-center ">Choose Use(s)</h4>
+									 <button type="button" class="close" data-dismiss="modal">&times;</button>
+									 </div>
+								 <!-- Modal body -->
+									 <div class="modal-body">
+										 <div class="row" id="prousecodeDiv">
+											 <?php 
+												foreach($pro_use as $resultUse){ ?>
+												 <div class="col-md-6">
+													 <div class="form-check"><?php echo $resultUse["pro_use"];?>
+														<input name="use[]" class="form-check-input caseProUse" type="checkbox" value="<?php echo $resultUse["pro_use"];?>" id="defaultCheckUse<?php echo $resultUse["id"];?>">
+														<label class="form-check-label" for="defaultCheckUse<?php echo $resultUse["id"];?>">            
+														</label>
+													 </div>        
+												 </div><?php 
+												}
+												?>
+										 </div>
+									</div>
+								 <!-- Modal footer -->
+								 <div class="modal-footer">
+									 <div class="row">
+										<div class="col-md-7">
+											<button type="button" class="btn form-btn" data-dismiss="modal" data-toggle="modal" data-target="#myModalZoning">Move to screen 3</button>
+										</div>
+										<div class="col-md-5">
+											<button type="button" class="btn form-btn" id="clearProUsebtn" rel="pro_use">Clear Filters</button>
+										</div>
+									 </div>
+								 </div>
+							 </div>
+						 </div>
+					 </div>
+					 </div>
+				</div>
+				<div class="col-md-4 col-sm-6 select-a">
+				   <button type="button" rel="zoning" class="btn btn-primary form-btn" data-toggle="modal" data-target="#myModalZoning">Select Zoning(s)</button>
+				   <!-- The Modal1 -->
+				   <div class="container">
+					  <div class="modal" id="myModalZoning">
+						 <div class="modal-dialog">
+							<div class="modal-content">
+							   <!-- Modal Header -->
+							   <div class="modal-header mod-head-cls">
+								  <h4 class="modal-title text-center">Choose Zoning(s)</h4>
+								  <button type="button" class="close" data-dismiss="modal">&times;</button>
+							   </div>
+							   <!-- Modal body -->
+							   <div class="modal-body">
+								  <div class="row" id="zoningcodeDiv">
+									 <?php 
+										foreach($zoning as $resultzZoning){ ?>
+									 <div class="col-md-4">
+										<div class="form-check"><?php echo $resultzZoning["zoning"];?><input name="zoning[]" class="form-check-input caseZoning" type="checkbox" value="<?php echo $resultzZoning["zoning"];?>" id="defaultCheck1_zon<?php echo $resultzZoning["id"];?>">
+										   <label class="form-check-label" for="defaultCheck1_zon<?php echo $resultzZoning["id"];?>">            
+										   </label>
+										</div>
+									 </div>
+									 <?php 
+										}
+										?>
+								  </div>
+							   </div>
+							   <!-- Modal footer -->
+							   <div class="modal-footer">
+								  <div class="row">
+									 <div class="col-md-7">
+										<button type="button" class="btn form-btn" data-dismiss="modal" 
+										   data-toggle="modal" data-target="#myModalNeighborhood">Move to screen 4</button>
+									 </div>
+									 <div class="col-md-5">
+										<button type="button" class="btn form-btn" id="clearZoningbtn" rel="zoning">Clear Filters</button>
+									 </div>
+								  </div>
+							   </div>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+				<div class="col-md-4 col-sm-6 select-a">
+				   <button type="button" class="btn btn-primary form-btn" data-toggle="modal" data-target="#myModalNeighborhood">Select Neighbourhood(s)</button>
+				   <!-- The Modal1 -->
+				   <div class="container">
+					  <div class="modal" id="myModalNeighborhood">
+						 <div class="modal-dialog">
+							<div class="modal-content">
+							   <!-- Modal Header -->
+							   <div class="modal-header mod-head-cls">
+								  <h4 class="modal-title text-center">Choose Neighborhood(s)</h4>
+								  <button type="button" class="close" data-dismiss="modal">&times;</button>
+							   </div>
+							   <!-- Modal body -->
+							   <div class="modal-body">
+								 <div class="row" id="neighborhoodcodeDiv">
+										<?php 
+										   foreach($neighborhood as $resultNeighborhood){ ?>
+											<div class="col-md-6">
+											   <div class="form-check"><?php echo $resultNeighborhood["neighborhood"];?><input name="neighborhood[]" class="form-check-input caseNeighborhood" type="checkbox" value="<?php echo $resultNeighborhood["neighborhood"];?>" id="defaultCheck1_neighborhood<?php echo $resultNeighborhood["id"];?>">
+												  <label class="form-check-label" for="defaultCheck1_neighborhood<?php echo $resultNeighborhood["id"];?>"> </label>
+											   </div>
+											</div>
+										<?php 
+										   }
+										   ?>
+									 </div>
+								</div>
+							   <!-- Modal footer -->
+							   <div class="modal-footer">
+								  <div class="row">
+									 <div class="col-md-7">
+										<button type="button" class="btn form-btn" data-dismiss="modal" data-toggle="modal" data-target="#myModalWard">Move to screen 5</button>
+									 </div>
+									 <div class="col-md-5">
+										<button type="button" class="btn form-btn" id="clearNeighborhoodbtn">Clear Filters</button>
+									 </div>
+								  </div>
+							   </div>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+				<div class="col-md-4 col-sm-6 select-a">
+				   <button type="button" class="btn btn-primary form-btn" data-toggle="modal" data-target="#myModalWard">Select Ward(s)</button>
+				   <!-- The Modal1 -->
+				   <div class="container">
+					  <div class="modal" id="myModalWard">
+						 <div class="modal-dialog modal-dialog2">
+							<div class="modal-content">
+							   <!-- Modal Header -->
+							   <div class="modal-header mod-head-cls">
+								  <h4 class="modal-title text-center">Choose Ward(s)</h4>
+								  <button type="button" class="close" data-dismiss="modal">&times;</button>
+							   </div>
+							   <!-- Modal body -->
+							   <div class="modal-body">
+								  <div class="row" id="wardcodeDiv">
+										<?php 
+										foreach($ward as $resultWard){ ?>
+											<div class="col-md-4">
+											   <div class="form-check"><?php echo $resultWard["ward"];?><input name="ward[]" class="form-check-input form-check-input1 caseWard" type="checkbox" value="<?php echo $resultWard["ward"];?>" id="defaultCheck1_ward<?php echo $resultWard["id"];?>">
+												  <label class="form-check-label" for="defaultCheck1_ward<?php echo $resultWard["id"];?>">            
+												  </label>
+											   </div>
+											</div>
+											<?php 
+										}
+										   ?>
+									 </div>
+								 
+							   </div>
+							   <!-- Modal footer -->
+							   <div class="modal-footer">
+								  <div class="row">
+									 <div class="col-md-7">
+										<button type="button" class="btn form-btn" data-dismiss="modal" data-toggle="modal" data-target="#myModalTaxDeduction">Move to screen 6</button>
+									 </div>
+									 <div class="col-md-5">
+										<button type="button" class="btn form-btn" id="clearWardbtn">Clear Filters</button>
+									 </div>
+								  </div>
+							   </div>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+				<div class="col-md-4 col-sm-6 select-a">
+				   <button type="button" class="btn btn-primary form-btn" data-toggle="modal" data-target="#myModalTaxDeduction">Select Homestead Tax Deduction(s)</button>
+				   <!-- The Modal1 -->
+				   <div class="container">
+					  <div class="modal" id="myModalTaxDeduction">
+						 <div class="modal-dialog modal-dialog2">
+							<div class="modal-content">
+							   <!-- Modal Header -->
+							   <div class="modal-header mod-head-cls">
+								  <h4 class="modal-title text-center">Choose Ward(s)</h4>
+								  <button type="button" class="close" data-dismiss="modal">&times;</button>
+							   </div>
+							   <!-- Modal body -->
+							   <div class="modal-body">
+								
+									 <div class="row" id="tax_deductioncodeDiv">
+										<?php 
+										   foreach($tax_deduction as $resultTaxDeduction){ ?>
+										<div class="col-md-12">
+										   <div class="form-check"><?php echo $resultTaxDeduction["tax_deduction"];?>
+											  <input name="taxDeduction[]" class="form-check-input 
+											  form-check-input2 caseTaxDeduction" type="checkbox" value="<?php echo $resultTaxDeduction["tax_deduction"];?>" id="defaultCheck1_tax_deduction<?php echo $resultTaxDeduction["id"];?>">
+											  <label class="form-check-label" for="defaultCheck1_tax_deduction<?php echo $resultTaxDeduction["id"];?>">            
+											  </label>
+										   </div>
+										</div>
+										<?php 
+										   }
+										   ?>
+									 </div>
+								  
+							   </div>
+							   <!-- Modal footer -->
+							   <div class="modal-footer">
+								  <div class="row">
+									 <div class="col-md-7">
+										<button type="button" class="btn form-btn" data-dismiss="modal">Move to Next screen </button>
+									 </div>
+									 <div class="col-md-5">
+										<button type="button" class="btn form-btn" id="clearTaxDeductionbtn">Clear Filters</button>
+									 </div>
+								  </div>
+							   </div>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+         </div>
+
+
+        <div class="erange">
+			<h5 class="text-center sub-heading pt-5">Please Enter A Land Range Between 112 and 12919556</h5>
+			<div class="row pt-4">
+				<div class="col-md-3"></div>
+			   <div class="col-md-3 col-sm-6">
+				  <div class="form-group">
+					 <input type="text" class="form-control numbervalidation" id="land_range_start" name="land_range_start" placeholder="Please Enter Start Land Range ">
+					 <span class="error-cls" id="error_land_range_start" style="display:none;">Please enter value greater than 112</span>
+				  </div>
+			   </div>
+			   <!-- <div class="col-md-3"></div> -->
+			   <div class="col-md-3 col-sm-6">
+				  <div class="form-group">
+					 <input type="text" class="form-control numbervalidation" id="land_range_end" name="land_range_end" placeholder="Please Enter End Land Range ">
+					 <span class="error-cls" id="error_land_range_end" style="display:none;">Please enter value greater than 112 and less than 12919556</span>
+				  </div>
+			   </div>
+			</div>
+			<h5 class="text-center sub-heading pt-5">Please Enter A Sale Date Range Between 1900-01-01 and 2019-10-22</h5>
+			<div class="row pt-4">
+				<div class="col-md-3"></div>
+			   <div class="col-md-3 col-sm-6">
+				  <div class="form-group">
+					 <input type="text" readonly="" class="form-control" id="from" name="fromSaleDate"  placeholder="" value="">
+				  </div>
+			   </div>
+			   <div class="col-md-3 col-sm-6">
+				  <div class="form-group">
+					 <input type="text"  readonly="" class="form-control" id="to" name="toSaleDate" placeholder="">
+				  </div>
+			   </div>
+			</div>
+			<h5 class="text-center sub-heading pt-5">Please Enter A Square Range Between 4 and 6277</h5>
+			<div class="row pt-4">
+				 <div class="col-md-3"></div>
+			   <div class="col-md-3 col-sm-6">
+				  <div class="form-group">
+					 <input type="text" class="form-control numbervalidation" id="square_start" name="square_start" placeholder="Please Enter A Start Square Value" >
+					 <span class="error-cls" id="error_square_start" style="display:none;">Please enter square value greater than 4</span>
+				  </div>
+			   </div>
+			   <div class="col-md-3 col-sm-6">
+				  <div class="form-group">
+					 <input type="text" class="form-control numbervalidation" id="square_end" name="square_end"  placeholder="Please Enter A End Square Value">
+					 <span class="error-cls" id="error_square_end" style="display:none;">Please enter square value greater than 4 and less than 6277</span>
+				  </div>
+			   </div>
+			</div>
+		</div>
+          <h5 class="text-center pt-5">Sort By</h5>
+            <div class="row sortbysection justify-content-center">
+                     <div class="col-md-3">
+                       <div class="box2 colo-btn" id="box7">
+                         <input type="radio" name="selectSortBy" autocomplete="off" class="radio-disable radiobtn radio-active" value="owername"> Owner Name
+					   </div>
+					  </div>
+                    <div class="col-md-3">
+                       <div class="box2 colo-btn" id="box10">
+                        <input type="radio" name="selectSortBy" autocomplete="off" class="radio-disable radiobtn"  value="zipcode"> Zip
+					      
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-3">
+                       <div class="box2 colo-btn" id="box13">
+                        <input type="radio" name="selectSortBy" autocomplete="off" class="radio-disable radiobtn"  value="zoning">Zoning
+                       </div>
+                     </div>
+                     <div class="col-md-3">
+                       <div class="box2 colo-btn" id="box14">
+                        <input type="radio" name="selectSortBy" autocomplete="off" class="radio-disable radiobtn"  value="neighborhood">Neighborhood
+                       </div>
+                     </div>
+					 <div class="col-md-4">
+                       <div class="box2 colo-btn" id="box15">
+                          <input type="radio" name="selectSortBy" autocomplete="off" class="radio-disable radiobtn"  value="ward">Ward
+                       </div>
+                     </div>
+					  <div class="col-md-4">
+                       <div class="box2 colo-btn" id="box9">
+                          <input type="radio" name="selectSortBy" autocomplete="off" class="radio-disable radiobtn"  value="use">Use(s)
+                       </div>
+                     </div>
+                     <div class="col-md-4">
+                       <div class="box2 colo-btn" id="box12">
+                         
+						 <input type="radio" name="selectSortBy" autocomplete="off" class="radio-disable radiobtn"  value="tax_deduction">Homestead Tax Deduction
+                       </div>
+                     </div>
+                    
+                    
+                     
+					
+                  
+            </div>
+            
+			 <div class="row advanbtn justify-content-center">
+				<!--<div class="col-md-4">
+					<button type="button" class="btn form-btn">Download Data</button>
+				</div>-->
+				<?php /*<div class="col-md-2">
+				 <?php if(($resultUser['status']==2) && (empty($this->session->userdata('email')))){ ?>
+
+				 	<button class="btn form-btn viewbtn" type="button"  data-toggle="modal" data-target="#paymentModalCenter">View Data</button>
+				 <?php } else {
+				 	if(!empty($resultUser['visitor_expiry_time']) && ($resultUser['status'])==1){ ?>	
+					<input type="button"  id="viewbtnpopup" class="btn form-btn viewbtn" name="submitBtn" value="View Data">
+				<?php } else {?>
+					<input type="submit" class="btn form-btn viewbtn" name="submitBtn" value="View Data">
+				<?php } 
+				}   ?>
+				</div>*/
+				?>
+
+
+				<div class="col-md-2">
+				 <?php 
+				 	if(!empty($resultUser['visitor_expiry_time']) && ($resultUser['status'])==1 && (empty($this->session->userdata('email')))){ ?>	
+					<button class="btn form-btn viewbtn" type="button"  data-toggle="modal" data-target="#paymentModalCenter">View Data</button>
+				<?php } else {?>
+					<input type="submit" class="btn form-btn viewbtn" name="submitBtn" value="View Data">
+				<?php } 
+				  ?>
+				</div>
+
+
+
+				<div class="col-md-2">
+					<a href="<?php echo base_url();?>"><button type="button" class="btn form-btn">Clear All</button></a>
+				</div>
+			 </div>
+         </div>
+         </form>
+      
+	  
+		</div>
+	</div>
+
+			
+			</div>
+		</section>
+		<!--/Section-->
+
+		   <div id="paymentModalCenter" class="modal fade" role="dialog">
+                               <div class="modal-dialog modal-lg">
+                                  <div class="modal-content">
+                                     <!-- Modal Header -->
+                                     <div class="modal-header mod-head-cls" style="background-color: #ed5151 !important;">
+                                        <h4 class="modal-title text-center" >Notification </h4>
+                                        <button type="button" class="close close-btn" data-dismiss="modal">×</button>
+                                     </div>
+                                     <!-- Modal body -->
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <p>Please login first for save search
+                          </p>
+                        
+                      </div>
+                      </div>
+                    </div>
+                       <!-- Modal footer -->
+                       
+                    </div>
+                  </div>
+                </div>

@@ -1,0 +1,403 @@
+<?php
+	class Advancedsearch_Model extends CI_Model
+	{
+		protected $table = 'zoning';
+		protected $properties_table = 'properties3';
+		public function __construct()
+		{
+			parent::__construct();
+			$this->load->database();
+			date_default_timezone_set('Asia/Kolkata');
+		}
+
+	public function get_authors($limit, $start) {
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('$this->table');
+
+        return $query->result();
+    }
+	public function getAllZip(){
+		$query = $this->db->get('zip');
+		$result = $query->result_array();
+		return  $result;
+	}
+	public function getAllZoning(){
+		$query = $this->db->get('zoning');
+		$result = $query->result_array();
+		return  $result;
+	}
+	public function getAllProUse(){
+		$query = $this->db->get('pro_use');
+		$result = $query->result_array();
+		return  $result;
+	}
+	public function getAllNeighborhood(){
+		$query = $this->db->get('neighborhood');
+		$result = $query->result_array();
+		return  $result;
+	}
+	public function getAllward(){
+		$query = $this->db->get('ward');
+		$result = $query->result_array();
+		return  $result;
+	}
+	public function getAllTaxDeduction(){
+		$query = $this->db->get('tax_deduction');
+		$result = $query->result_array();
+		return  $result;
+	}
+	public function searching(){
+		$where  = ' where 1';
+		if(!empty($_POST['propertyCheck'])){
+			 $propertyCheck =implode("','",$_POST['propertyCheck']);
+			 $where  .= " AND atype IN ( '".$propertyCheck."' )";
+		}
+		if(!empty($_POST['zip'])){
+			 $zip =implode("','",$_POST['zip']);
+			 $where  .= " AND zip IN ( '".$zip."' )";
+		}
+		if(!empty($_POST['use'])){
+			 $use =implode("','",$_POST['use']);
+			 $where  .= " AND pro_use IN ( '".$use."' )";
+		}
+		if(!empty($_POST['zoning'])){
+			 $zoning =implode("','",$_POST['zoning']);
+			 $where  .= " AND zoning IN ( '".$zoning."' )";
+		}
+		if(!empty($_POST['neighborhood'])){
+			 $neighborhood =implode("','",$_POST['neighborhood']);
+			 $where  .= " AND neighborhood IN ( '".$neighborhood."' )";
+		}
+		if(!empty($_POST['ward'])){
+			 $ward =implode("','",$_POST['ward']);
+			 $where  .= " AND ward IN ( '".$ward."' )";
+		}
+		if(!empty($_POST['taxDeduction'])){
+			 $taxDeduction =implode("','",$_POST['taxDeduction']);
+			 $where  .= " AND homestead_tax_deduction IN ( '".$taxDeduction."' )";
+		}
+		if(!empty($_POST['land_range_start']) && !empty($_POST['land_range_end'])){
+			
+			 $where  .= " AND (land_area >='".$_POST['land_range_start']."' OR land_area <='".$_POST['land_range_end']."')";
+		}
+		if(!empty($_POST['fromSaleDate']) && !empty($_POST['toSaleDate'])){
+			
+			// $where  .= " AND (sale_date >='".$_POST['fromSaleDate']."' OR sale_date <='".$_POST['toSaleDate']."')";
+		}
+		if(!empty($_POST['square_start']) && !empty($_POST['square_end'])){
+			
+			 $where  .= " AND (square >='".$_POST['square_start']."' OR square <='".$_POST['square_end']."')";
+		}
+		//$Sql ="select * from f1 ".$where." LIMIT ".$start." , ".$limit;
+		$Sql ="select * from  ".$this->properties_table.$where;
+	
+	
+	    $query = $this->db->query($Sql);
+		$numRow = $query->num_rows();
+		$result = $query->result_array();
+		$this->get_count($numRow);
+		return  $result;
+	}
+		public function get_count() {
+		$where  = ' where 1';
+		if(!empty($_POST['propertyCheck'])){
+			 $propertyCheck =implode("','",$_POST['propertyCheck']);
+			 $where  .= " AND atype IN ( '".$propertyCheck."' )";
+		}
+		if(!empty($_POST['zip'])){
+			 $zip =implode("','",$_POST['zip']);
+			 $where  .= " AND zip IN ( '".$zip."' )";
+		}
+		if(!empty($_POST['use'])){
+			 $use =implode("','",$_POST['use']);
+			 $where  .= " AND pro_use IN ( '".$use."' )";
+		}
+		if(!empty($_POST['zoning'])){
+			 $zoning =implode("','",$_POST['zoning']);
+			 $where  .= " AND zoning IN ( '".$zoning."' )";
+		}
+		if(!empty($_POST['neighborhood'])){
+			 $neighborhood =implode("','",$_POST['neighborhood']);
+			 $where  .= " AND neighborhood IN ( '".$neighborhood."' )";
+		}
+		if(!empty($_POST['ward'])){
+			 $ward =implode("','",$_POST['ward']);
+			 $where  .= " AND ward IN ( '".$ward."' )";
+		}
+		if(!empty($_POST['taxDeduction'])){
+			 $taxDeduction =implode("','",$_POST['taxDeduction']);
+			 $where  .= " AND homestead_tax_deduction IN ( '".$taxDeduction."' )";
+		}
+		if(!empty($_POST['land_range_start']) && !empty($_POST['land_range_end'])){
+			
+			 $where  .= " AND (land_area >='".$_POST['land_range_start']."' OR land_area <='".$_POST['land_range_end']."')";
+		}
+		if(!empty($_POST['fromSaleDate']) && !empty($_POST['toSaleDate'])){
+			
+			// $where  .= " AND (sale_date >='".$_POST['fromSaleDate']."' OR sale_date <='".$_POST['toSaleDate']."')";
+		}
+		if(!empty($_POST['square_start']) && !empty($_POST['square_end'])){
+			
+			 $where  .= " AND (square >='".$_POST['square_start']."' OR square <='".$_POST['square_end']."')";
+		}
+		$Sql ="select * from ".$this->properties_table.$where;
+		$query = $this->db->query($Sql);
+		$numRow = $query->num_rows();
+		return  $numRow;
+
+		}
+	
+		// Fetch records
+	public function getData($rowno,$rowperpage) {
+		
+		$orderBy ="";
+		if(!empty($_POST['selectSortBy']) && $_POST['selectSortBy']=='owername'){
+				if($_POST['SortBy']=='asc'){
+					$sortBy = $_POST['SortBy'];
+				}
+				if($_POST['SortBy']=='desc'){
+					$sortBy = $_POST['SortBy'];
+				}
+			$orderBy .=" ORDER BY owner_names ". $sortBy;
+		}
+		if(!empty($_POST['selectSortBy']) && $_POST['selectSortBy']=='zipcode'){
+				if($_POST['SortBy']=='asc'){
+					$sortBy = $_POST['SortBy'];
+				}
+				if($_POST['SortBy']=='desc'){
+					$sortBy = $_POST['SortBy'];
+				}
+			$orderBy .=" ORDER BY zip ". $sortBy;
+		}
+		
+		if(!empty($_POST['selectSortBy']) && $_POST['selectSortBy']=='zoning'){
+				if($_POST['SortBy']=='asc'){
+					$sortBy = $_POST['SortBy'];
+				}
+				if($_POST['SortBy']=='desc'){
+					$sortBy = $_POST['SortBy'];
+				}
+			$orderBy .=" ORDER BY zoning ". $sortBy;
+		}
+		if(!empty($_POST['selectSortBy']) && $_POST['selectSortBy']=='neighborhood'){
+				if($_POST['SortBy']=='asc'){
+					$sortBy = $_POST['SortBy'];
+				}
+				if($_POST['SortBy']=='desc'){
+					$sortBy = $_POST['SortBy'];
+				}
+			$orderBy .=" ORDER BY neighborhood ". $sortBy;
+		}
+		if(!empty($_POST['selectSortBy']) && $_POST['selectSortBy']=='ward'){
+				if($_POST['SortBy']=='asc'){
+					$sortBy = $_POST['SortBy'];
+				}
+				if($_POST['SortBy']=='desc'){
+					$sortBy = $_POST['SortBy'];
+				}
+			$orderBy .=" ORDER BY ward ". $sortBy;
+		}
+		if(!empty($_POST['selectSortBy']) && $_POST['selectSortBy']=='use'){
+				if($_POST['SortBy']=='asc'){
+					$sortBy = $_POST['SortBy'];
+				}
+				if($_POST['SortBy']=='desc'){
+					$sortBy = $_POST['SortBy'];
+				}
+			$orderBy .=" ORDER BY pro_use ". $sortBy;
+		}
+		if(!empty($_POST['selectSortBy']) && $_POST['selectSortBy']=='tax_deduction'){
+				if($_POST['SortBy']=='asc'){
+					$sortBy = $_POST['SortBy'];
+				}
+				if($_POST['SortBy']=='desc'){
+					$sortBy = $_POST['SortBy'];
+				}
+			$orderBy .=" ORDER BY homestead_tax_deduction ". $sortBy;
+		}
+		$where  = ' where 1';
+		if(!empty($_POST['propertyCheck'])){
+			 $propertyCheck =implode("','",$_POST['propertyCheck']);
+			 $where  .= " AND atype IN ( '".$propertyCheck."' )";
+		}
+		if(!empty($_POST['zip'])){
+			 $zip =implode("','",$_POST['zip']);
+			 $where  .= " AND zip IN ( '".$zip."' )";
+		}
+		if(!empty($_POST['use'])){
+			 $use =implode("','",$_POST['use']);
+			 $where  .= " AND pro_use IN ( '".$use."' )";
+		}
+		if(!empty($_POST['zoning'])){
+			 $zoning =implode("','",$_POST['zoning']);
+			 $where  .= " AND zoning IN ( '".$zoning."' )";
+		}
+		if(!empty($_POST['neighborhood'])){
+			 $neighborhood =implode("','",$_POST['neighborhood']);
+			 $where  .= " AND neighborhood IN ( '".$neighborhood."' )";
+		}
+		if(!empty($_POST['ward'])){
+			 $ward =implode("','",$_POST['ward']);
+			 $where  .= " AND ward IN ( '".$ward."' )";
+		}
+		if(!empty($_POST['taxDeduction'])){
+			 $taxDeduction =implode("','",$_POST['taxDeduction']);
+			 $where  .= " AND homestead_tax_deduction IN ( '".$taxDeduction."' )";
+		}
+		if(!empty($_POST['land_range_start']) && !empty($_POST['land_range_end'])){
+			
+			 $where  .= " AND (land_area >='".$_POST['land_range_start']."' OR land_area <='".$_POST['land_range_end']."')";
+		}
+		if(!empty($_POST['fromSaleDate']) && !empty($_POST['toSaleDate'])){
+			
+			// $where  .= " AND (sale_date >='".$_POST['fromSaleDate']."' OR sale_date <='".$_POST['toSaleDate']."')";
+		}
+		if(!empty($_POST['square_start']) && !empty($_POST['square_end'])){
+			
+			 $where  .= " AND (square >='".$_POST['square_start']."' OR square <='".$_POST['square_end']."')";
+		}
+		if(!empty($_POST['simplesearch']) && !empty($_POST['searchbox'])){
+			 
+			 $where  .= " AND address like '%".$_POST['searchbox']."%'";
+		}
+		
+		$Sql ="select * from  ".$this->properties_table.$where. $orderBy." LIMIT ".$rowno." , ".$rowperpage;
+		
+		//$Sql ="select * from f1 ".$where." LIMIT ".$rowno." , ".$rowperpage;
+		//$Sql ="select * from f1 ".$where;
+		
+	
+	    $query = $this->db->query($Sql);
+		$numRow = $query->num_rows();
+		$result = $query->result_array();
+		$this->get_count($numRow);
+		return  $result;
+	}
+
+	// Select total records
+    public function getrecordCount() {
+	$where  = ' where 1';
+		if(!empty($_POST['propertyCheck'])){
+			 $propertyCheck =implode("','",$_POST['propertyCheck']);
+			 $where  .= " AND atype IN ( '".$propertyCheck."' )";
+		}
+		if(!empty($_POST['zip'])){
+			 $zip =implode("','",$_POST['zip']);
+			 $where  .= " AND zip IN ( '".$zip."' )";
+		}
+		if(!empty($_POST['use'])){
+			 $use =implode("','",$_POST['use']);
+			 $where  .= " AND pro_use IN ( '".$use."' )";
+		}
+		if(!empty($_POST['zoning'])){
+			 $zoning =implode("','",$_POST['zoning']);
+			 $where  .= " AND zoning IN ( '".$zoning."' )";
+		}
+		if(!empty($_POST['neighborhood'])){
+			 $neighborhood =implode("','",$_POST['neighborhood']);
+			 $where  .= " AND neighborhood IN ( '".$neighborhood."' )";
+		}
+		if(!empty($_POST['ward'])){
+			 $ward =implode("','",$_POST['ward']);
+			 $where  .= " AND ward IN ( '".$ward."' )";
+		}
+		if(!empty($_POST['taxDeduction'])){
+			 $taxDeduction =implode("','",$_POST['taxDeduction']);
+			 $where  .= " AND homestead_tax_deduction IN ( '".$taxDeduction."' )";
+		}
+		if(!empty($_POST['land_range_start']) && !empty($_POST['land_range_end'])){
+			
+			 $where  .= " AND (land_area >='".$_POST['land_range_start']."' OR land_area <='".$_POST['land_range_end']."')";
+		}
+		if(!empty($_POST['fromSaleDate']) && !empty($_POST['toSaleDate'])){
+			
+			// $where  .= " AND (sale_date >='".$_POST['fromSaleDate']."' OR sale_date <='".$_POST['toSaleDate']."')";
+		}
+		if(!empty($_POST['square_start']) && !empty($_POST['square_end'])){
+			
+			 $where  .= " AND (square >='".$_POST['square_start']."' OR square <='".$_POST['square_end']."')";
+		}
+		if(!empty($_POST['simplesearch']) && !empty($_POST['searchbox'])){
+			 
+			  $where  .= " AND address like '%".$_POST['searchbox']."%'";
+		}
+		$Sql ="select * from ".$this->properties_table.$where;
+		$query = $this->db->query($Sql);
+		$allcount = $query->num_rows();
+		return  $allcount;
+    }
+    
+    public function checkUserIpAddress(){
+		$currentDate = date("Y-m-d H:i:s");
+		$currentDate_timestamp = strtotime($currentDate);
+		$endDate_Time = strtotime("+10 minutes", $currentDate_timestamp);
+		$EndDateTime = date("Y-m-d H:i:s", $endDate_Time);
+		
+		$Sql ="select * from  visitor_user where ip_address = '".$_SERVER['REMOTE_ADDR']."' ";
+		$query = $this->db->query($Sql);
+		$allcount = $query->num_rows();
+		if($allcount > 0){
+			
+		}else{
+			$insertData ="insert into  visitor_user set
+			server_name='".$_SERVER['SERVER_NAME']."',
+			server_addr='".$_SERVER['SERVER_ADDR']."',
+			ip_address='".$_SERVER['REMOTE_ADDR']."',
+			visitor_start_time='".$currentDate."',
+			visitor_expiry_time='".$EndDateTime."'
+			";
+		  $query = $this->db->query($insertData);
+		}
+		
+	}
+	public function getUserIpAddress(){
+		$query = $this->db->where('ip_address',$_SERVER['REMOTE_ADDR'])->get('visitor_user');
+		$result = $query->row_array();
+		return  $result;
+	}
+	public function getuserdata(){
+		$query = $this->db->where('id',$_POST['id'])->get($this->properties_table);
+		$result = $query->result_array();
+		return  $result;
+	}
+
+	public function checkUserexpired(){
+		if(isset($_POST['checkstatus']) && $_POST['checkstatus']==1){
+			$Sql ="update visitor_user set status= 1 where ip_address='".$_SERVER['REMOTE_ADDR']."'";
+		    return $query = $this->db->query($Sql);
+		}
+		
+	}
+	//Save Search Data
+	public function saveSearch(){
+	
+	 $totalrows =  $this->getrecordCount();
+		$post_array = $_POST;
+			if(!empty($_POST['SortBy'])){
+				unset($_POST['SortBy']);
+				unset($_POST['searchName']);
+				if(!array_filter($_POST)) {
+					$empty_status =0;
+	    		}
+				else{
+						$empty_status =1;
+				}
+			}
+
+		$data = array(
+					
+					'user_id' => $this->session->userdata('user_id'),
+					'searchName' => $post_array['searchName'],
+					'search_data' => json_encode($post_array),
+					'empty_status' => $empty_status,
+					'rowcount' => $totalrows,
+					'created_date' => date("Y-m-d H:i:s")
+				);
+				
+			$result = $this->db->insert('tbl_save_search', $data);
+			if($result){ return 1;}else{ return 0;}
+			//$resultrn $this->db->insert_id();
+			
+	}
+
+}
